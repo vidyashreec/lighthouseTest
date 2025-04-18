@@ -24,7 +24,7 @@ jobs:
     
     - name: Run Lighthouse test
       run: |
-        lhci collect --url="https://www.google.com/search?q=login&rlz=1C1GCEA_enIN1106IN1106&oq=login&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQABiPAjIHCAIQABiPAjIHCAMQABiPAjIGCAQQRRg8MgYIBRBFGDwyBggGEEUYPNIBCDIwNjhqMGoxqAIAsAIA&sourceid=chrome&ie=UTF-8"
+        lhci collect --url="https://www.w3schools.com/HTML/html_examples.asp"
         lhci assert --preset=lighthouse:recommended
     
     - name: Upload results
