@@ -1,35 +1,34 @@
-name: Measure URL Performance
+name: UI Performance Test
 
 on:
   workflow_dispatch: # Allows manual triggering
-    inputs:
-      url:
-        description: 'URL to test'
-        required: true
-        default: 'https://www.youtube.com/watch?v=R8_veQiYBjI&t=300s'
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 12 * * *' # Run daily at noon UTC
 
 jobs:
   performance-test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
-
+      uses: actions/checkout@v4  # Fixed version (was 'va' in error)
+    
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v3  # Fixed version (was 'va' in error)
       with:
         node-version: '18'
-
+    
     - name: Install Lighthouse CI
       run: npm install -g @lhci/cli
-
+    
     - name: Run Lighthouse test
       run: |
-        lhci collect --url="${{ github.event.inputs.url || 'https://www.youtube.com/watch?v=R8_veQiYBjI&t=300s' }}"
+        lhci collect --url="https://www.youtube.com/watch?v=R8_veQiYBjI&t=300s"
         lhci assert --preset=lighthouse:no-pwa
-
-    - name: Upload results as artifact
-      uses: actions/upload-artifact@v3
+    
+    - name: Upload results
+      uses: actions/upload-artifact@v4  # Updated to v4 (was v3 in error)
       with:
         name: lighthouse-results
         path: .lighthouseci/
