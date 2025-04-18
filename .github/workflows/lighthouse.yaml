@@ -25,7 +25,7 @@ jobs:
     - name: Run Lighthouse test
       run: |
         lhci collect --url="https://www.youtube.com/watch?v=R8_veQiYBjI&t=300s"
-        lhci assert --preset=lighthouse:no-pwa
+        lhci assert --preset=lighthouse:recommended
     
     - name: Upload results
       uses: actions/upload-artifact@v4  # Updated to v4 (was v3 in error)
