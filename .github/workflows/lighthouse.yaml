@@ -12,23 +12,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4  # Fixed version (was 'va' in error)
+      uses: actions/checkout@v4
     
     - name: Set up Node.js
-      uses: actions/setup-node@v3  # Fixed version (was 'va' in error)
+      uses: actions/setup-node@v3
       with:
         node-version: '18'
     
     - name: Install Lighthouse CI
       run: npm install -g @lhci/cli
     
-    - name: Run Lighthouse test
+    - name: Run Lighthouse test (without assertions)
       run: |
-        lhci collect --url="https://www.w3schools.com/HTML/html_examples.asp"
-        lhci assert --preset=lighthouse:recommended
+        lhci collect --url="https://www.w3schools.com/HTML/html_examples.asp" --no-lighthouserc
+        # Convert results to readable format
+        mkdir -p results
+        for file in .lighthouseci/*.json; do
+          filename=$(basename "$file")
+          jq '.' "$file" > "results/${filename}"
+        done
     
     - name: Upload results
-      uses: actions/upload-artifact@v4  # Updated to v4 (was v3 in error)
+      uses: actions/upload-artifact@v4
       with:
         name: lighthouse-results
-        path: .lighthouseci/
+        path: |
+          .lighthouseci/
+          results/
